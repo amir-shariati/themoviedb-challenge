@@ -1,0 +1,23 @@
+#the compose compose file version
+version: "3.7"
+
+
+services:
+
+  front-movie-dev:
+
+    image: front-movie-dev
+    container_name: front-movie-dev-cnt
+    env_file: env/.env.dev
+    build:
+      context: .
+      dockerfile: compose/develop/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ".:/app"
+      - "/app/node_modules"
+
+#    # set the environment to development
+#    environment:
+#      - NODE_ENV=development

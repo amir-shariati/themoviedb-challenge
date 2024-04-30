@@ -1,0 +1,90 @@
+#the compose compose file version
+version: '3.7'
+
+
+services:
+
+  back-movie-dev:
+
+    image: back-movie-web-dev
+    container_name: back-movie-web-dev-cnt
+    env_file: env/.env.dev
+    build:
+      context: .
+      # the Dockerfile to be run
+      dockerfile: compose/develop/django/Dockerfile
+    ports:
+      - '8000:8000'
+    volumes:
+      - '.:/app'
+#    command: python manage.py runserver 0.0.0.0:8000
+    command: /start
+    depends_on:
+      - redis
+      - db
+
+  db:
+    image: postgres:13.0-alpine
+    container_name: movie-db-postgres-cnt
+    volumes:
+      - postgres_movie_data_dev:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=hello_django
+      - POSTGRES_PASSWORD=hello_django
+      - POSTGRES_DB=hello_django_dev
+
+  redis:
+    image: redis:7-alpine
+    container_name: movie-db-redis-cnt
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: compose/develop/django/Dockerfile
+    image: movie-celery-worker-dev
+    container_name: movie-celery-worker-dev-cnt
+    command: /start-celeryworker
+    volumes:
+      - .:/app
+    env_file:
+      - env/.env.dev
+    depends_on:
+      - redis
+      - db
+
+  celery_beat:
+    build:
+      context: .
+      dockerfile: compose/develop/django/Dockerfile
+    image: movie-celery-beat-dev
+    container_name: movie-celery-beat-dev-cnt
+    command:
+      - /start-celerybeat
+    volumes:
+      - .:/app
+    env_file:
+      - env/.env.dev
+    depends_on:
+      - redis
+      - db
+
+  flower:
+    build:
+      context: .
+      dockerfile: compose/develop/django/Dockerfile
+    image: movie-celery-flower-dev
+    container_name: shipment-celery-flower-dev-cnt
+    command:
+      - /start-flower
+    volumes:
+      - .:/app
+    env_file:
+      - env/.env.dev
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
+      - db
+
+volumes:
+  postgres_movie_data_dev:
