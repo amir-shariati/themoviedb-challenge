@@ -180,3 +180,10 @@ TASK_START_UP_ALREADY_RUN = False
 DOCKER_BACKEND_SERVER = int(os.environ.get("DOCKER_BACKEND_SERVER", default=False))
 print(f'DOCKER_BACKEND_SERVER: {DOCKER_BACKEND_SERVER}')
 
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "localhost:3000",
+#     "http://127.0.0.1:3000",
+#     "127.0.0.1:3000",
+# ]
+CORS_ORIGIN_ALLOW_ALL = True
