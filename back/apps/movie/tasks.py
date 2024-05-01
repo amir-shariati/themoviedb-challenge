@@ -64,9 +64,6 @@ def one_time_app_startup_task():
 
 
 @shared_task
-def movie_update_every_two_hours():
-    logger.info(f'update weather at : {datetime.now()}')
-    return True
 def movie_fetch_data(page=1):
     st_date = '2024-04-01'
     en_date = '2024-04-02'
@@ -112,3 +109,48 @@ def movie_fetch_data(page=1):
             movie_persist_data_to_db(movie_data)
 
 
+@shared_task()
+def movie_persist_data_to_db(movie_data: MovieResponseType):
+
+    movie, created = Movie.objects.update_or_create(
+        movie_id=movie_data['movie_id'],
+        defaults=movie_data
+    )
+    logger.info(f'movie [{movie.movie_id}] title: {movie.title} update_or_create')
+    return movie
+
+
+@shared_task
+def movie_list_update_every_two_hours():
+    logger.info(f'update Movie at : {datetime.now()}')
+    st_date = '2024-04-01'
+    en_date = '2024-04-02'
+    page = 1
+    headers = {'Authorization': f'Bearer {settings.THEMOVIEDB_API_KEY}'}
+    payload = {
+        'include_adult': 'false',
+        'include_video': 'false',
+        'language': 'en-US',
+        'page': page,
+        'release_date.gte': st_date,
+        'release_date.lte': en_date,
+        'sort_by': 'popularity.desc',
+    }
+
+    with requests.Session() as session:
+        response = session.get(
+            url=f'https://api.themoviedb.org/3/discover/movie',
+            params=payload,
+            headers=headers
+        )
+
+    res_json = response.json()
+    total_pages = res_json.get('total_pages')
+    total_results = res_json.get('total_results')
+
+    if total_pages is not None:
+        logger.info(f'movie_list_update_every_two_hours, total_pages: {total_pages}, total_results: {total_results}')
+        for page in range(total_pages + 1):
+            movie_fetch_data.delay(page)
+    else:
+        logger.info(f'movie_list_update_every_two_hours, res_json: {res_json}')
