@@ -1,0 +1,1 @@
+export {MovieList} from './MovieListPage'
