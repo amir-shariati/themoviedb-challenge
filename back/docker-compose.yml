@@ -75,7 +75,7 @@ services:
       context: .
       dockerfile: compose/develop/django/Dockerfile
     image: movie-celery-flower-dev
-    container_name: shipment-celery-flower-dev-cnt
+    container_name: movie-celery-flower-dev-cnt
     command:
       - /start-flower
     volumes:
