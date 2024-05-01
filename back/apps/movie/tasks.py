@@ -56,6 +56,7 @@ def one_time_app_startup_task():
     total_results = res_json.get('total_results')
 
     if total_pages is not None:
+        logger.info(f'one_time_app_startup_task, total_pages: {total_pages}, total_results: {total_results}')
         for page in range(total_pages + 1):
             movie_fetch_data.delay(page)
     else:
