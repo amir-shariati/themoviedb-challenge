@@ -3,6 +3,8 @@
 
 # Project Setup Guide
 
+Before proceeding to step 4, ensure that you create a file named .env.dev inside the env directory. For guidance, a sample file named .env.sample has been provided in that directory. In the .env.dev file, make sure to replace THEMOVIEDB_API_KEY with the API key you obtained from https://developer.themoviedb.org.
+
 To run the project in the development environment, follow the steps below:
 
 1. Make sure you have Docker installed on your system.
