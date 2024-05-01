@@ -16,7 +16,7 @@ CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 CELERY_BEAT_SCHEDULE = {
     "movie_update_every_two_hours": {
-        "task": "apps.movie.tasks.movie_update_every_two_hours",
+        "task": "apps.movie.tasks.movie_list_update_every_two_hours",
         "schedule": crontab(minute=0, hour='*/2'),
     },
 }

@@ -7,5 +7,6 @@ set -o pipefail
 # exits if any of your variables is not set
 set -o nounset
 
+python manage.py makemigrations movie
 python manage.py migrate
 python manage.py runserver 0.0.0.0:8000

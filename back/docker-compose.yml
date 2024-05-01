@@ -9,6 +9,8 @@ services:
     image: back-movie-web-dev
     container_name: back-movie-web-dev-cnt
     env_file: env/.env.dev
+    environment:
+      - DOCKER_BACKEND_SERVER=1
     build:
       context: .
       # the Dockerfile to be run
@@ -73,7 +75,7 @@ services:
       context: .
       dockerfile: compose/develop/django/Dockerfile
     image: movie-celery-flower-dev
-    container_name: shipment-celery-flower-dev-cnt
+    container_name: movie-celery-flower-dev-cnt
     command:
       - /start-flower
     volumes:

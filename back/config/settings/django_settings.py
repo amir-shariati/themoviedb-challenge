@@ -52,6 +52,7 @@ DEFAULT_APPS = [
 
 THIRD_PARTY_APPS = [
     # add apps which you install using pip
+    'corsheaders',
     'rest_framework',
     'drf_spectacular',
 ]
@@ -70,6 +71,7 @@ if DEBUG:
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -168,5 +170,18 @@ MEDIA_ROOT = BASE_DIR / "mediafiles"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # themoviedb API Key
-THEMOVIEDB_API_KEY = '939b80e5ea4aec26634e8ad95eee6035'
-# THEMOVIEDB_API_KEY = os.environ.get("THEMOVIEDB_API_KEY", default=get_random_secret_key())
+# THEMOVIEDB_API_KEY = ''
+THEMOVIEDB_API_KEY = os.environ.get("THEMOVIEDB_API_KEY", default=get_random_secret_key())
+print(f'set THEMOVIEDB_API_KEY in env directory, .env.dev')
+
+TASK_START_UP_ALREADY_RUN = False
+DOCKER_BACKEND_SERVER = int(os.environ.get("DOCKER_BACKEND_SERVER", default=False))
+print(f'DOCKER_BACKEND_SERVER: {DOCKER_BACKEND_SERVER}')
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "localhost:3000",
+#     "http://127.0.0.1:3000",
+#     "127.0.0.1:3000",
+# ]
+CORS_ORIGIN_ALLOW_ALL = True
