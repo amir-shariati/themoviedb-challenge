@@ -3,7 +3,6 @@ from .models import Movie
 from .serializers import MovieSerializer
 
 
-# Create your views here.
 class MovieListView(generics.ListAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
@@ -11,3 +10,6 @@ class MovieListView(generics.ListAPIView):
     search_fields = ['title']
 
 
+class MovieRetrieveView(generics.RetrieveAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
