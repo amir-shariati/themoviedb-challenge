@@ -9,6 +9,8 @@ services:
     image: back-movie-web-dev
     container_name: back-movie-web-dev-cnt
     env_file: env/.env.dev
+    environment:
+      - DOCKER_BACKEND_SERVER=1
     build:
       context: .
       # the Dockerfile to be run
