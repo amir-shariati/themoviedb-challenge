@@ -170,8 +170,6 @@ MEDIA_ROOT = BASE_DIR / "mediafiles"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # themoviedb API Key
-THEMOVIEDB_API_KEY = '939b80e5ea4aec26634e8ad95eee6035'
-# THEMOVIEDB_API_KEY = os.environ.get("THEMOVIEDB_API_KEY", default=get_random_secret_key())
 # THEMOVIEDB_API_KEY = ''
 THEMOVIEDB_API_KEY = os.environ.get("THEMOVIEDB_API_KEY", default=get_random_secret_key())
 print(f'set THEMOVIEDB_API_KEY in env directory, .env.dev')
