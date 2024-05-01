@@ -67,3 +67,48 @@ def one_time_app_startup_task():
 def movie_update_every_two_hours():
     logger.info(f'update weather at : {datetime.now()}')
     return True
+def movie_fetch_data(page=1):
+    st_date = '2024-04-01'
+    en_date = '2024-04-02'
+    headers = {'Authorization': f'Bearer {settings.THEMOVIEDB_API_KEY}'}
+    payload = {
+        'include_adult': 'false',
+        'include_video': 'false',
+        'language': 'en-US',
+        'page': page,
+        'release_date.gte': st_date,
+        'release_date.lte': en_date,
+        'sort_by': 'popularity.desc',
+    }
+
+    with requests.Session() as session:
+        response = session.get(
+            url=f'https://api.themoviedb.org/3/discover/movie',
+            params=payload,
+            headers=headers
+        )
+
+    res_json = response.json()
+    results: List[MovieResponseType] = res_json.get('results')
+
+    movie_data: MovieResponseType = dict()
+    if response.status_code == 200:
+        for movie in results:
+            movie_data['adult'] = movie.get('adult')
+            movie_data['backdrop_path'] = movie.get('backdrop_path')
+            # movie_data['genre_ids'] = movie.get('genre_ids')
+            movie_data['movie_id'] = movie.get('id')
+            movie_data['original_language'] = movie.get('original_language')
+            movie_data['original_title'] = movie.get('original_title')
+            movie_data['overview'] = movie.get('overview')
+            movie_data['popularity'] = movie.get('popularity')
+            movie_data['poster_path'] = movie.get('poster_path')
+            movie_data['release_date'] = movie.get('release_date')
+            movie_data['title'] = movie.get('title')
+            movie_data['video'] = movie.get('video')
+            movie_data['vote_average'] = movie.get('vote_average')
+            movie_data['vote_count'] = movie.get('vote_count')
+
+            movie_persist_data_to_db(movie_data)
+
+
