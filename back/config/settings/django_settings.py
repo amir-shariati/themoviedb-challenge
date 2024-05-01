@@ -52,6 +52,7 @@ DEFAULT_APPS = [
 
 THIRD_PARTY_APPS = [
     # add apps which you install using pip
+    'corsheaders',
     'rest_framework',
     'drf_spectacular',
 ]
