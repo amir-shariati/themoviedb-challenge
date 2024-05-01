@@ -1,4 +1,3 @@
-Sure, here's a README file with instructions for setting up and running the project, written at a B1 English level:
 
 ---
 
